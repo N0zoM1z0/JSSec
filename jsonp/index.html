@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSONP Example</title>
+</head>
+<body>
+<h1>JSONP Example</h1>
+<button onclick="fetchData()">Fetch Data via JSONP</button>
+<p id="output"></p>
+
+<script>
+    function fetchData() {
+        // 定义回调函数
+        window.handleResponse = function(data) {
+            console.log(data);
+            document.getElementById("output").innerText = `Message: ${data.message}, Status: ${data.status}`;
+        };
+
+        // 动态创建 <script> 标签加载 JSONP 数据
+        const script = document.createElement("script");
+        script.src = "http://127.0.0.1:3000?callback=handleResponse";
+        script.onload = function() {
+            console.log("JSONP script loaded.");
+        };
+        script.onerror = function() {
+            console.error("Error loading JSONP script.");
+        };
+
+        // 将 <script> 标签添加到文档中
+        document.body.appendChild(script);
+    }
+</script>
+</body>
+</html>
